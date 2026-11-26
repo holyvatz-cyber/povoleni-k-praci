@@ -2,6 +2,14 @@
 <html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Povolení k práci – Knauf Insulation Krupka</title>
 <meta name="theme-color" content="#003778">
+<meta name="description" content="Digitální povolení k práci – Knauf Insulation, závod Krupka">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Povolení k práci">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{
   --cyan:#0099de;--cyan80:#33ade5;--cyan40:#99d6f2;--cyan20:#ccebf8;--cyan10:#e6f5fc;
   --blue:#003778;--dkgreen:#004b46;--green:#87c15f;--green40:#d2e7c0;
@@ -199,7 +207,7 @@ table.t input.inp{padding:6px 8px}
 .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
 .filters .inp{width:260px}
 .empty{text-align:center;padding:50px 20px;color:var(--muted)}
-.empty svg{width:56px;height:56px;stroke:var(--cyan40);margin-bottom:8px}
+.empty>svg{width:56px;height:56px;stroke:var(--cyan40);margin-bottom:8px}
 
 /* BOARD */
 body.boardmode{background:#eef3f6}
@@ -304,6 +312,36 @@ body.mobilemode main{padding:0;max-width:560px}
   table.t.resp tr{display:block;border-bottom:1px solid var(--grey70);padding:6px 0}
   table.t.resp td{display:block;border:0;padding:3px 8px}
 }
+
+/* ASSISTANT CHAT (PC) */
+.asst-fab{position:fixed;right:22px;bottom:22px;z-index:120;background:var(--blue);color:#fff;border:0;border-radius:28px;padding:13px 18px 13px 15px;display:flex;align-items:center;gap:9px;font-weight:700;cursor:pointer;box-shadow:0 8px 24px rgba(0,40,90,.28)}
+.asst-fab:hover{background:var(--cyan)}
+.asst-fab .ico{width:20px;height:20px}
+body.boardmode .asst-fab,body.boardmode .asst,body.mobilemode .asst-fab,body.mobilemode .asst{display:none!important}
+.asst{position:fixed;right:22px;bottom:22px;z-index:130;width:400px;height:min(600px,calc(100vh - 110px));background:#fff;border-radius:14px;box-shadow:0 20px 60px rgba(0,30,70,.3);display:flex;flex-direction:column;overflow:hidden}
+.asst header{background:var(--blue);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.asst header b{flex:1;font-size:15px}
+.asst header small{display:block;font-weight:400;opacity:.8;font-size:11.5px}
+.asst header button{background:none;border:0;color:#fff;cursor:pointer;padding:4px;border-radius:6px}
+.asst header button:hover{background:rgba(255,255,255,.15)}
+.asst .msgs{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:var(--bg)}
+.msg{max-width:88%;padding:9px 12px;border-radius:12px;font-size:13.5px;line-height:1.45}
+.msg.me{align-self:flex-end;background:var(--cyan);color:#fff;border-bottom-right-radius:4px}
+.msg.bot{align-self:flex-start;background:#fff;border:1px solid var(--grey70);border-bottom-left-radius:4px}
+.msg.bot .chg{display:flex;align-items:center;gap:8px;margin-top:6px;padding:6px 8px;background:var(--cyan10);border-radius:7px;font-size:12.5px}
+.msg.bot .chg s{color:var(--muted)}
+.msg.bot .warnline{margin-top:6px;color:#8a3f00;font-size:12px}
+.msg ul{margin:4px 0;padding-left:18px}
+.asst .chips{display:flex;gap:6px;padding:8px 12px;overflow-x:auto;border-top:1px solid var(--grey40);background:#fff}
+.asst .chips button{flex:none;border:1px solid var(--cyan40);background:#fff;color:var(--blue);border-radius:16px;padding:5px 10px;font-size:12px;cursor:pointer;white-space:nowrap}
+.asst .chips button:hover{background:var(--cyan10)}
+.asst form{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--grey40)}
+.asst form input{flex:1;border:1px solid var(--grey);border-radius:20px;padding:9px 14px;font-size:14px}
+.asst form input:focus{outline:2px solid var(--cyan40);border-color:var(--cyan)}
+.asst form button{border:0;background:var(--cyan);color:#fff;border-radius:50%;width:40px;height:40px;cursor:pointer;display:grid;place-items:center}
+@media (max-width:899px){.asst-fab{display:none}.asst{right:8px;left:8px;bottom:8px;width:auto}}
+.installbtn{background:var(--dkgreen)!important;color:#fff!important}
+@media (max-width:720px){.hide-sm{display:none}}
 </style></head>
 <body><header class="topbar" id="topbar"></header><main id="main"></main><div id="print"></div>
 <script>//---------------------------------------------------------------------
@@ -2644,13 +2682,16 @@ const METHODS=[['mma','Obloukové – obalená elektroda (MMA)','Arc – stick e
 const HOTCHK=[['r3m','V okruhu min. 3 m odklizen hořlavý materiál, příp. zakryt nehořlavou tkaninou / zástěnou','All flammables within 3 m removed or covered by fire-resistant fabric / partition',1],['ext','Na místě připraveny přenosné hasicí přístroje (případně natažen proud „C“)','Portable extinguishers ready on site (or one C-hose laid)',1],['clean','Svařované místo očištěno od nečistot a nánosů','Welding spot cleaned of contamination and sediments',1],['escape','Únikové cesty z pracoviště průchodné','Escape routes passable',1],['brief','Požární dohled poučen dle osnovy (zadní strana) před zahájením','Fire watch briefed per outline (back page) before start',1],['cert','Svářeč stvrzuje platný svářečský průkaz a proškolení','Welder confirms valid certificate and training',1],['bottles','Tlakové lahve zajištěny, jejich umístění je známo','Pressure cylinders secured, location known',1],['gasmon','Nutné sledovat koncentraci hořlavých látek (→ KK_F047)','Flammable concentration monitoring needed (→ KK_F047)',0]];
 const SPACES=[['fz1','Sací box Formovacího zařízení 1','Forming suction box 1'],['fz2','Sací box Formovacího zařízení 2','Forming suction box 2'],['wetep','WET EP','WET EP'],['oven','Vytvrzovací pec','Curing oven'],['cyc','Cyklony HE','HE cyclones'],['wwp','Wash water pit','Wash water pit'],['dryep','DRY EP','DRY EP'],['other','Jiné','Other']];
 const DEVICES=['TETRA','Mini Rae','T3','Gasman','Jiný / Other'];
+const spaces=()=>[...SPACES.slice(0,-1),...(S.settings.extraSpaces||[]).map(n=>['x:'+n,n,n]),SPACES.at(-1)];
+const spaceLabel=a=>!a||!a.space?'—':a.space==='other'?(a.spaceOther||'—'):a.space.startsWith('x:')?a.space.slice(2):lbl(SPACES.find(s=>s[0]===a.space)||['',a.space,a.space]);
+const devices=()=>[...DEVICES.slice(0,-1),...(S.settings.extraDevices||[]),DEVICES.at(-1)];
 const GASES=[['o2','Kyslík (O₂)','Oxygen (O₂)','%'],['ch4','Methan (CH₄)','Methane (CH₄)','% DMV'],['co','CO','CO','ppm'],['so2','SO₂','SO₂','ppm'],['nh3','Amoniak (NH₃)','Ammonia (NH₃)','ppm']];
 const ATMCHK=[['a','(A) byly učiněny kroky k zamezení úniku nebezpečných plynů a výparů','(A) steps were taken to prevent ingress of hazardous gases and vapours'],['b','(B) nečistoty, které by mohly být zdrojem nebezpečných výparů, byly odstraněny','(B) residues that could release hazardous vapours were removed'],['c','(C) prostor byl dostatečně odvětrán, otestován a je dostatečně zásoben kyslíkem','(C) the space was ventilated, tested and has sufficient oxygen']];
 const STATUS={draft:['Koncept','Draft'],active:['Aktivní','Active'],suspended:['Pozastaveno','Suspended'],expired:['Prošlá platnost','Expired'],completed:['Práce ukončeny','Work completed'],closed:['Uzavřeno / předáno','Closed / handed over'],cancelled:['Zrušeno','Cancelled']};
 
 /* ---------- state ---------- */
 const DEFAULT_SETTINGS={lang:'cs',plant:'Závod Krupka',publicUrl:'',nextNo:101,nextHot:223,nextAtm:1,logo:null,emergency:'150 / 112',gateTel:'',holderDefault:'Vedoucí směny',
- limits:{o2min:19.5,o2max:23.5,ch4:10,co:25,so2:0.5,nh3:20},boardRotate:true,soonMin:120};
+ limits:{o2min:19.5,o2max:23.5,ch4:10,co:25,so2:0.5,nh3:20},boardRotate:true,soonMin:120,defPostHours:8,defInterval:30,extraSpaces:[],extraDevices:[],changeLog:[]};
 let S={settings:{...DEFAULT_SETTINGS},permits:[]};
 function load(){try{const r=localStorage.getItem(STORE);if(r){const o=JSON.parse(r);S={settings:{...DEFAULT_SETTINGS,...o.settings,limits:{...DEFAULT_SETTINGS.limits,...(o.settings||{}).limits}},permits:o.permits||[]}}}catch(e){console.warn(e)}LANG=S.settings.lang||'cs'}
 let saveT=null;
@@ -2669,7 +2710,7 @@ function newPermit(){
   workers:[],extensions:[],s10:{done:'',state:'',receiver:null,shift:null,handover:null},
   hot:null,atm:null,copies:{board:true,mobile:[],prints:[]},log:[{at:Date.now(),t:'Vytvořeno'}]};
 }
-function newHot(p){const n=S.settings.nextHot++;save();return {seq:String(n).padStart(6,'0'),issueDate:nowLocal(),task:p.s1.description||'',workplace:p.s1.location||'',welders:[{name:'',cert:'',sig:null},{name:'',cert:'',sig:null}],method:'',from:p.s8.validFrom,to:p.s8.validTo,chk:{},measures:'',extinguishers:'',watchers:['',''],reportTo:{name:'',func:''},postHours:8,interval:30,issuer:null,ackWatch:null,ackAppointer:null,log:[],weldStart:null,weldEnd:null,reported:null}}
+function newHot(p){const n=S.settings.nextHot++;save();return {seq:String(n).padStart(6,'0'),issueDate:nowLocal(),task:p.s1.description||'',workplace:p.s1.location||'',welders:[{name:'',cert:'',sig:null},{name:'',cert:'',sig:null}],method:'',from:p.s8.validFrom,to:p.s8.validTo,chk:{},measures:'',extinguishers:'',watchers:['',''],reportTo:{name:'',func:''},postHours:Math.max(8,+S.settings.defPostHours||8),interval:+S.settings.defInterval||30,issuer:null,ackWatch:null,ackAppointer:null,log:[],weldStart:null,weldEnd:null,reported:null}}
 function newAtm(p){return {space:'',spaceOther:'',zone:'',meas:[],chk:{},entryFrom:p.s8.validFrom,entryTo:p.s8.validTo,entrants:[],measures:'',reason:p.s1.description||'',responsible:null,ackSafe:null,handStart:null,handEnd:null}}
 const P=id=>S.permits.find(p=>p.id===id);
 const getPath=(o,path)=>path.split('.').reduce((a,k)=>a==null?a:a[k],o);
@@ -2748,7 +2789,7 @@ function mobilePayload(p,holder){
   w:p.workers.map(w=>w.name).slice(0,12),ib:p.s8.issuedBy?.name||'',sm:p.s8.shift?.name||'',rc:p.s8.receiver?.name||'',
   hd:p.holder.name,ho:holder,at:Date.now(),em:S.settings.emergency,gt:S.settings.gateTel,
   h:h&&p.s5.hot?{q:h.seq,m:h.method,f:h.from,t:h.to,wa:h.watchers.filter(Boolean),ph:h.postHours,iv:h.interval,rt:h.reportTo.name}:null,
-  a:a&&p.s5.confined?{sp:a.space==='other'?a.spaceOther:a.space,et:a.entryTo,mt:m?m.at:null,mv:m?m.v:null,ok:m?!measDanger(m).bad:null}:null};
+  a:a&&p.s5.confined?{sp:spaceLabel(a),et:a.entryTo,mt:m?m.at:null,mv:m?m.v:null,ok:m?!measDanger(m).bad:null}:null};
 }
 async function encodePayload(obj){
  const json=JSON.stringify(obj);
@@ -2807,6 +2848,7 @@ function topbar(){
  const b=(v,i,cs,en)=>`<button class="${R.view===v||(v==='list'&&R.view==='edit')?'on':''}" data-act="go" data-v="${v}">${ic(i)}<span>${L(cs,en)}</span></button>`;
  return `<div class="brand">${brandHTML()}<div class="app"><b>${L('Povolení k práci','Permit to Work')}</b><small>${esc(S.settings.plant)} · KI_F_057 · KK_053 · KK_047</small></div></div>
  <nav class="nav">${b('dash','home','Přehled','Overview')}${b('list','list','Povolení','Permits')}${b('board','board','Digitální board','Digital board')}${b('settings','gear','Nastavení','Settings')}</nav>
+ ${!isStandalone()&&(installEvt||location.protocol==='https:')?`<button class="btn sm installbtn" data-act="install" title="${L('Nainstalovat do PC / telefonu','Install on PC / phone')}">${ic('dl')}<span class="hide-sm">${L('Instalovat','Install')}</span></button>`:''}
  <div class="lang"><button class="${LANG==='cs'?'on':''}" data-act="lang" data-l="cs">CZ</button><button class="${LANG==='en'?'on':''}" data-act="lang" data-l="en">EN</button></div>`;
 }
 
@@ -3007,7 +3049,7 @@ function tabAtm(p){
  const m=lastMeas(p);
  return `<div class="card"><h3>${ic('gas')}KK_047 · ${L('Záznam o testování atmosféry v uzavřených prostorech','Confined-space atmosphere test record')}</h3>
  <h4 style="margin-bottom:6px">${L('Umístění a popis uzavřeného prostoru','Location of confined space')}</h4>
- <div class="radioline">${SPACES.map(s=>`<button class="pill ${a.space===s[0]?'on':''}" data-act="set" data-path="atm.space" data-v="${s[0]}" ${dis()}>${esc(lbl(s))}</button>`).join('')}</div>
+ <div class="radioline">${spaces().map(s=>`<button class="pill ${a.space===s[0]?'on':''}" data-act="set" data-path="atm.space" data-v="${s[0]}" ${dis()}>${esc(lbl(s))}</button>`).join('')}</div>
  <div class="grid g2" style="margin-top:10px">${a.space==='other'?fText(p,'atm.spaceOther','Jiný prostor – popis','Other space – description',{req:1}):''}${fText(p,'atm.zone','V zóně','Zone')}</div></div>
  <div class="card"><h3>${L('Část 1 · Osvědčení testování atmosféry','Part 1 · Atmosphere test certificate')}</h3>
  ${m?`<div class="banner ${measDanger(m).bad?'err':'ok'}">${ic(measDanger(m).bad?'alert':'check')}<div>${L('Poslední měření','Latest measurement')} ${fmtShort(m.at)}: <b>${measDanger(m).bad?L('NEBEZPEČNÁ KONCENTRACE – vstup bez dýchací techniky zakázán','HAZARDOUS CONCENTRATION – entry without breathing apparatus prohibited'):L('bez nebezpečné koncentrace','no hazardous concentration')}</b>${Date.now()-T(m.at)>2*3600000&&live?` · <span style="color:var(--orange)">${L('měření je starší než 2 h – zvažte opakování','older than 2 h – consider re-testing')}</span>`:''}</div></div>`:''}
@@ -3094,7 +3136,7 @@ function viewBoard(){
   <div class="tags">${p.s5.hot?'<span class="tag hot">🔥 KK_053</span>':''}${p.s5.confined?'<span class="tag atm">KK_047</span>':''}${p.s5.atex?'<span class="tag warn">ATEX</span>':''}${tags}</div>
   ${welding(p)?`<div class="fw">${ic('flame')}${L('SVAŘUJE SE od','WELDING since')} ${fmtTime(p.hot.weldStart)} · ${L('dohled','watch')}: ${esc(p.hot.watchers.filter(Boolean).join(', '))}</div>`:''}
   ${fw?`<div class="fw ${fw.overdue?'over':''}">${ic('flame')}${L('Dohled po svařování do','Post-weld watch until')} ${fmtTime(fw.until)} · ${fw.overdue?L('KONTROLA PO TERMÍNU','CHECK OVERDUE'):L('další kontrola','next check')+' '+fmtTime(fw.next)}</div>`:''}
-  ${p.s5.confined&&m?`<div class="fw" style="background:${measDanger(m).bad?'var(--red10)':'#f0eefa'};color:${measDanger(m).bad?'var(--red)':'#4b3a8c'};border-color:#ddd6f3">${ic('gas')}${esc(p.atm.space==='other'?p.atm.spaceOther:lbl(SPACES.find(s=>s[0]===p.atm.space)||['','—','—']))} · O₂ ${esc(m.v.o2)} % · ${measDanger(m).bad?L('NEBEZPEČNÉ','HAZARDOUS'):L('měřeno','tested')+' '+fmtTime(m.at)} · ${L('vstup do','entry until')} ${fmtTime(p.atm.entryTo)}</div>`:''}
+  ${p.s5.confined&&m?`<div class="fw" style="background:${measDanger(m).bad?'var(--red10)':'#f0eefa'};color:${measDanger(m).bad?'var(--red)':'#4b3a8c'};border-color:#ddd6f3">${ic('gas')}${esc(spaceLabel(p.atm))} · O₂ ${esc(m.v.o2)} % · ${measDanger(m).bad?L('NEBEZPEČNÉ','HAZARDOUS'):L('měřeno','tested')+' '+fmtTime(m.at)} · ${L('vstup do','entry until')} ${fmtTime(p.atm.entryTo)}</div>`:''}
   <div class="foot">${ic('clock')}<span>${L('Platí do','Valid until')} <b>${fmtShort(toLocal(ve))}</b></span><span class="count">${left<0?L('PROŠLO','EXPIRED'):dur(left)}</span></div></div>`}).join('');
  return `<div class="board"><div class="bhead">${S.settings.logo?`<img src="${S.settings.logo}" style="height:40px;background:#fff;padding:4px 8px;border-radius:6px">`:brandHTML()}<div><h1>${L('Povolení k práci – aktuální stav','Permits to work – live status')}</h1><div style="opacity:.85">${esc(S.settings.plant)} · ${L('Nouze','Emergency')}: <b>${esc(S.settings.emergency)}</b>${S.settings.gateTel?` · ${L('Vrátnice','Gate')}: <b>${esc(S.settings.gateTel)}</b>`:''}</div></div>
  <div class="clock" id="bclock">${pad2(d.getHours())}:${pad2(d.getMinutes())}</div><div class="date">${d.toLocaleDateString(LANG==='en'?'en-GB':'cs-CZ',{weekday:'long',day:'numeric',month:'long'})}</div></div>
@@ -3113,6 +3155,10 @@ function viewSettings(){
  <div class="card"><h3>${ic('mobile')}${L('Mobilní kopie pro externisty','Contractor mobile copies')}</h3><div class="grid g2">${t('publicUrl','Veřejná adresa aplikace (např. GitHub Pages / intranet)','Public app URL (e.g. GitHub Pages / intranet)',{hint:L('QR kód mobilní kopie vede na tuto adresu. Externista musí adresu otevřít bez přihlášení do firemních systémů. Data kopie jsou zakódována přímo v odkazu – nic se neukládá na server.','The mobile copy QR points here. Contractors must reach it without corporate login. Copy data is encoded in the link itself – nothing is stored on a server.')})}<div class="f"><label>${L('Aktuálně použito','Currently used')}</label><div class="mono small" style="padding:8px 0;word-break:break-all">${esc(baseUrl())}</div></div></div></div>
  <div class="card"><h3>${ic('gas')}${L('Limity pro vyhodnocení měření (KK_047)','Measurement limits (KK_047)')}</h3><div class="banner warn">${ic('alert')}<div>${L('Výchozí hodnoty jsou pouze orientační. Před použitím je ověřte a schvalte s HSE / technikem PO podle platné legislativy a vnitřních předpisů závodu.','Default values are indicative only. Verify and approve them with HSE / fire technician against current legislation and plant rules before use.')}</div></div>
  <div class="grid g3">${t('limits.o2min','O₂ minimum (%)','O₂ minimum (%)',{type:'number',step:'0.1'})}${t('limits.o2max','O₂ maximum (%)','O₂ maximum (%)',{type:'number',step:'0.1'})}${t('limits.ch4','CH₄ max (% DMV)','CH₄ max (% LEL)',{type:'number',step:'0.1'})}${t('limits.co','CO max (ppm)','CO max (ppm)',{type:'number',step:'0.1'})}${t('limits.so2','SO₂ max (ppm)','SO₂ max (ppm)',{type:'number',step:'0.1'})}${t('limits.nh3','NH₃ max (ppm)','NH₃ max (ppm)',{type:'number',step:'0.1'})}</div></div>
+ <div class="card"><h3>${ic('flame')}${L('Výchozí hodnoty KK_053','KK_053 defaults')}</h3><div class="grid g3">${t('defPostHours','Dohled po svařování (h, min. 8)','Post-weld watch (h, min 8)',{type:'number'})}${t('defInterval','Interval kontrol (min)','Check interval (min)',{type:'number'})}</div></div>
+ <div class="card"><h3>${ic('gas')}${L('Vlastní seznamy (KK_047)','Custom lists (KK_047)')}</h3><div class="grid g2"><div><h4>${L('Uzavřené prostory navíc','Extra confined spaces')}</h4><div style="margin-top:6px">${(s.extraSpaces||[]).map(x=>`<span class="tag">${esc(x)}</span>`).join('')||'<span class="muted small">—</span>'}</div></div><div><h4>${L('Měřicí přístroje navíc','Extra gas detectors')}</h4><div style="margin-top:6px">${(s.extraDevices||[]).map(x=>`<span class="tag">${esc(x)}</span>`).join('')||'<span class="muted small">—</span>'}</div></div></div><div class="hint" style="margin-top:8px">${L('Položky přidáte nebo odeberete přes Asistenta nastavení, např. „přidej prostor Silo 3“.','Add or remove items via the Settings assistant, e.g. “add space Silo 3”.')}</div></div>
+ <div class="card"><h3>${ic('dl')}${L('Instalace a asistent','Install & assistant')}</h3><div class="btnrow"><button class="btn installbtn" data-act="install">${ic('dl')}${L('Nainstalovat do PC / telefonu','Install on PC / phone')}</button><button class="btn" data-act="asst">${ic('gear')}${L('Otevřít asistenta nastavení','Open settings assistant')}</button>${isStandalone()?`<span class="badge b-active">${L('Běží jako nainstalovaná aplikace','Running as installed app')}</span>`:''}</div>
+ ${(s.changeLog||[]).length?`<h4 style="margin:14px 0 6px">${L('Historie změn nastavení','Settings change history')}</h4><table class="t"><tbody>${s.changeLog.slice(-10).reverse().map(x=>`<tr><td class="small">${fmtShort(toLocal(x.at))}</td><td>${esc(x.label)}</td><td class="small muted">${esc(x.from)} → <b>${esc(x.to)}</b></td></tr>`).join('')}</tbody></table>`:''}</div>
  <div class="card"><h3>${L('Logo','Logo')}</h3><div class="btnrow">${S.settings.logo?`<img src="${S.settings.logo}" style="height:40px;border:1px solid var(--grey);padding:4px;border-radius:6px">`:brandHTML()}<label class="btn">${ic('up')}${L('Nahrát logo (PNG/SVG)','Upload logo (PNG/SVG)')}<input type="file" id="logoIn" accept="image/*" hidden></label>${S.settings.logo?`<button class="btn danger" data-act="nologo">${L('Odebrat','Remove')}</button>`:''}</div></div>
  <div class="card"><h3>${ic('dl')}${L('Data','Data')}</h3><div class="hint" style="margin-bottom:10px">${L('Data se ukládají v tomto prohlížeči. Pravidelně exportujte zálohu.','Data are stored in this browser. Export a backup regularly.')}</div>
  <div class="btnrow"><button class="btn" data-act="export">${ic('dl')}${L('Export JSON (záloha)','Export JSON (backup)')}</button><label class="btn">${ic('up')}${L('Import JSON','Import JSON')}<input type="file" id="importIn" accept=".json,application/json" hidden></label><button class="btn" data-act="csv">${ic('dl')}${L('Export registru CSV','Export register CSV')}</button><button class="btn" data-act="demo">${L('Přidat ukázková data','Add sample data')}</button><button class="btn danger" data-act="wipe">${ic('trash')}${L('Smazat vše','Delete all')}</button></div></div>`;
@@ -3138,7 +3184,7 @@ async function renderMobile(hash){
   <div class="msec"><h3>${ic('doc')}${L('Práce','Work')}</h3>${row(L('Místo','Location'),esc(d.lo))}${row(L('Objekt','Building'),esc(d.bo))}${row(L('Úkol','Task'),esc(d.ds))}${row(L('Dodavatel','Contractor'),esc(d.su))}${row(L('Příjemce','Receiver'),esc(d.rc||d.sc))}${row(L('Povolení vydal','Issued by'),esc(d.ib))}${row(L('Vedoucí směny','Shift manager'),esc(d.sm))}${row(L('Originál drží','Original held by'),esc(d.hd))}</div>
   ${d.h?`<div class="msec" style="border-left:5px solid var(--orange)"><h3>${ic('flame')}KK_053 · ${L('Práce s otevřeným ohněm','Hot work')}</h3>${row(L('Poř. č.','Seq.'),esc(d.h.q))}${row(L('Způsob','Method'),esc(lbl(METHODS.find(m=>m[0]===d.h.m)||['',d.h.m||'—',d.h.m||'—'])))}${row(L('Svařování','Welding'),fmtShort(d.h.f)+' – '+fmtShort(d.h.t))}${row(L('Požární dohled','Fire watch'),esc(d.h.wa.join(', ')))}${row(L('Dohled po svařování','Post-weld watch'),d.h.ph+' h / '+d.h.iv+' min')}${row(L('Ukončení hlásit','Report end to'),esc(d.h.rt))}
    <div class="small muted" style="margin-top:6px">${L('V okruhu 3 m žádný hořlavý materiál · hasicí přístroj na místě · při změně podmínek práci přerušit a informovat nadřízeného a technika PO.','No flammables within 3 m · extinguisher on site · if conditions change, stop and inform supervisor and fire technician.')}</div></div>`:''}
-  ${d.a?`<div class="msec" style="border-left:5px solid #6c5bb8"><h3>${ic('gas')}KK_047 · ${L('Uzavřený prostor','Confined space')}</h3>${row(L('Prostor','Space'),esc(lbl(SPACES.find(s=>s[0]===d.a.sp)||['',d.a.sp,d.a.sp])))}${row(L('Poslední měření','Last test'),fmtShort(d.a.mt))}${d.a.mv?GASES.map(g=>d.a.mv[g[0]]!==''&&d.a.mv[g[0]]!=null?row(esc(lbl(g)),esc(d.a.mv[g[0]])+' '+g[3]):'').join(''):''}${row(L('Vstup bezpečný do','Entry safe until'),`<span style="color:${T(d.a.et)<now?'var(--red)':'inherit'}">${fmtShort(d.a.et)}</span>`)}
+  ${d.a?`<div class="msec" style="border-left:5px solid #6c5bb8"><h3>${ic('gas')}KK_047 · ${L('Uzavřený prostor','Confined space')}</h3>${row(L('Prostor','Space'),esc(d.a.sp))}${row(L('Poslední měření','Last test'),fmtShort(d.a.mt))}${d.a.mv?GASES.map(g=>d.a.mv[g[0]]!==''&&d.a.mv[g[0]]!=null?row(esc(lbl(g)),esc(d.a.mv[g[0]])+' '+g[3]):'').join(''):''}${row(L('Vstup bezpečný do','Entry safe until'),`<span style="color:${T(d.a.et)<now?'var(--red)':'inherit'}">${fmtShort(d.a.et)}</span>`)}
    ${d.a.ok===false?`<div class="banner err" style="margin-top:8px">${L('Nebezpečná koncentrace – vstup zakázán.','Hazardous concentration – entry prohibited.')}</div>`:''}${T(d.a.et)<now?`<div class="banner err" style="margin-top:8px">${L('Čas bezpečného vstupu uplynul – v prostoru nepracujte.','Safe entry time passed – do not work in the space.')}</div>`:''}</div>`:''}
   ${d.r.length?`<div class="msec"><h3>${ic('alert')}${L('Rizika','Hazards')}</h3>${d.r.map(k=>RISK_ALL[k]?`<span class="tag">${esc(lbl(RISK_ALL[k].a))}</span>`:'').join('')}</div>`:''}
   ${d.pp.length||d.sec||d.iso?`<div class="msec"><h3>${ic('shield')}${L('Opatření a OOPP','Measures & PPE')}</h3>${d.pp.map(k=>PPE_ALL[k]?`<span class="tag">${esc(lbl(PPE_ALL[k]))}</span>`:'').join('')}${row(L('Zajištění pracoviště','Workplace secured'),esc(d.sec))}${row(L('Odpojení','Isolation'),esc(d.iso))}</div>`:''}
@@ -3186,7 +3232,7 @@ function measModal(p){
  const lim=S.settings.limits;
  const m=modal(`${ic('gas')} ${L('Záznam měření atmosféry','Atmosphere measurement')}`,`<div class="grid g2">
  <div class="f req"><label>${L('Čas měření','Time')}</label><input type="datetime-local" id="mAt" value="${nowLocal()}"></div>
- <div class="f req"><label>${L('Měřicí přístroj','Device')}</label><select id="mDev">${DEVICES.map(d=>`<option>${d}</option>`).join('')}</select></div>
+ <div class="f req"><label>${L('Měřicí přístroj','Device')}</label><select id="mDev">${devices().map(d=>`<option>${esc(d)}</option>`).join('')}</select></div>
  <div class="f req spanall"><label>${L('Měření provedl','Measured by')}</label><input type="text" id="mBy"></div>
  ${GASES.map(g=>`<div class="f"><label>${esc(lbl(g))} (${g[3]})</label><input type="number" step="0.01" data-g="${g[0]}" placeholder="${g[0]==='o2'?`${lim.o2min}–${lim.o2max}`:`≤ ${lim[g[0]]}`}"></div>`).join('')}
  <div class="f"><label>${L('Jiný plyn – název','Other gas – name')}</label><input type="text" id="mON"></div><div class="f"><label>${L('Jiný – hodnota','Other – value')}</label><input type="text" id="mOV"></div>
@@ -3249,7 +3295,7 @@ async function doPrint(p,c){
  ${tr('1 '+L('Datum vystavení','Issue date'),fmt(x.issueDate))}${tr('2 '+L('Úkol','Task'),esc(x.task))}${tr('3 '+L('Pracoviště','Workplace'),esc(x.workplace))}${x.welders.map((w,i)=>w.name?tr(`4 ${L('Svářeč','Welder')} ${i+1}`,`${esc(w.name)} · ${L('č. průkazu','cert.')} ${esc(w.cert)} ${w.sig?`<img class="s" src="${w.sig.sig}">`:''}`):'').join('')}${tr('5 '+L('Způsob svařování','Method'),esc(lbl(METHODS.find(m=>m[0]===x.method)||['','—','—'])))}${tr('6 '+L('Od – do','From – until'),fmt(x.from)+' – '+fmt(x.to))}
  ${tr('7 '+L('Opatření','Measures'),HOTCHK.filter(c=>x.chk[c[0]]).map(c=>'✔ '+esc(lbl(c))).join('<br>')+(x.measures?'<br>'+esc(x.measures):''))}${tr('7 '+L('Hasební prostředky','Extinguishers'),esc(x.extinguishers))}${tr('8 '+L('Požární dohled','Fire watch'),esc(x.watchers.filter(Boolean).join(', ')))}${tr('9 '+L('Ukončení se ohlásí','Report end to'),esc(x.reportTo.name+' – '+x.reportTo.func))}${tr('10 '+L('Dohled po svařování','Post-weld watch'),`${x.postHours} h, ${L('interval','interval')} ${x.interval} min`)}${tr('11 '+L('Příkaz vydal','Issued by'),sg(x.issuer))}
  ${tr('13 '+L('Záznam dohledu','Watch log'),x.log.map(l=>`${fmtShort(toLocal(l.at))} – ${esc(l.type)} – ${esc(l.by)}`).join('<br>'))}${tr(L('Poučení dohledu – podpis','Watch briefing – signature'),sg(x.ackWatch))}${tr(L('Určil a poučil','Appointed & briefed by'),sg(x.ackAppointer))}</table>`}
- if(p.s5.confined&&p.atm){const a=p.atm;h+=`<div class="pb"></div>`+head(L('ZÁZNAM O TESTOVÁNÍ ATMOSFÉRY V UZAVŘENÝCH PROSTORECH','CONFINED-SPACE ATMOSPHERE TEST RECORD'),'KK_047')+`<table>${tr(L('Prostor','Space'),esc(a.space==='other'?a.spaceOther:lbl(SPACES.find(s=>s[0]===a.space)||['','—','—'])))}${tr(L('Zóna','Zone'),esc(a.zone))}</table>
+ if(p.s5.confined&&p.atm){const a=p.atm;h+=`<div class="pb"></div>`+head(L('ZÁZNAM O TESTOVÁNÍ ATMOSFÉRY V UZAVŘENÝCH PROSTORECH','CONFINED-SPACE ATMOSPHERE TEST RECORD'),'KK_047')+`<table>${tr(L('Prostor','Space'),esc(spaceLabel(a)))}${tr(L('Zóna','Zone'),esc(a.zone))}</table>
  <table><tr><th style="width:auto">${L('Čas / kdo / přístroj','Time / by / device')}</th>${GASES.map(g=>`<th style="width:auto">${esc(lbl(g))}</th>`).join('')}<th style="width:auto">${L('Výsledek','Result')}</th></tr>${a.meas.map(m=>`<tr><td>${fmt(m.at)} · ${esc(m.by)} · ${esc(m.dev)}</td>${GASES.map(g=>`<td>${esc(m.v[g[0]]??'')}</td>`).join('')}<td>${measDanger(m).bad?L('NEBEZPEČNÉ','HAZARDOUS'):'OK'}</td></tr>`).join('')}</table>
  <table>${tr(L('Seznámen s výsledky','Results acknowledged'),sg(a.responsible))}${ATMCHK.map(c=>tr(esc(lbl(c)),a.chk[c[0]]?'✔':'—')).join('')}${tr(L('Vstup možný od – do','Entry from – until'),fmt(a.entryFrom)+' – '+fmt(a.entryTo))}${tr(L('Opatření před vstupem','Measures before entry'),esc(a.measures))}${tr(L('Důvod vstupu','Reason'),esc(a.reason))}${tr(L('Vstupující osoby','Entrants'),a.entrants.map(e=>`${esc(e.name)} ${e.sig?`<img class="s" src="${e.sig.sig}">`:''}`).join('<br>'))}${tr(L('Odpovědná osoba','Responsible'),sg(a.ackSafe))}${tr(L('Předání (začátek)','Handover (start)'),sg(a.handStart))}${tr(L('Převzetí (konec)','Takeover (end)'),sg(a.handEnd))}</table>`}
  h+=`<p class="small" style="margin-top:10px">${L('Vytištěno','Printed')} ${fmt(nowLocal())} · ${L('Rozhodující je originál v systému / u odpovědné osoby KI.','The original held by the KI responsible person prevails.')}</p>`;
@@ -3302,6 +3348,8 @@ document.addEventListener('click',e=>{
   case 'csv':{const rows=[['Číslo','Stav','Dodavatel','Kontakt','Místo','Úkol','Platnost od','Platnost do','KK_053','KK_047','Originál drží','Pracovníků']];S.permits.forEach(p=>rows.push([p.no,L(...STATUS[effStatus(p)]),p.s1.supplier,p.s1.supContact,p.s1.location,p.s1.description,fmt(p.s8.validFrom),fmt(toLocal(validEnd(p))),p.s5.hot?'ANO':'',p.s5.confined?'ANO':'',p.holder.name,p.workers.length]));dl(new Blob(['﻿'+rows.map(r=>r.map(c=>`"${String(c??'').replace(/"/g,'""').replace(/\n/g,' ')}"`).join(';')).join('\r\n')],{type:'text/csv'}),'registr-povoleni.csv');break}
   case 'demo':demo();toast(L('Ukázková data přidána','Sample data added'));go('dash');break;
   case 'wipe':confirmBox(L('Smazat VŠECHNA povolení a nastavení v tomto prohlížeči?','Delete ALL permits and settings in this browser?'),()=>{S={settings:{...DEFAULT_SETTINGS,lang:LANG},permits:[]};saveNow();go('dash')},1);break;
+  case 'install':installApp();break;
+  case 'asst':AS.open=true;asstRender();setTimeout(()=>$('#asstIn')?.focus(),50);break;
   case 'nologo':S.settings.logo=null;save();render();break;
  }
 });
@@ -3331,10 +3379,129 @@ window.addEventListener('storage',e=>{if(e.key===STORE){load();if(R.view!=='edit
 
 function afterRender(){
  clearInterval(boardTimer);
+ if(typeof asstRender==='function')asstRender();
  if(R.view==='board'){boardTimer=setInterval(()=>{load();render()},15000)}
 }
 setInterval(()=>{if(R.view==='dash'||R.view==='list'){if(!document.activeElement||document.activeElement.id!=='q')render()}else if(R.view==='edit'){const p=curP();const s=$('#side');if(p&&s)s.innerHTML=sidePanel(p)}},30000);
 setInterval(()=>{const c=$('#bclock');if(c){const d=new Date();c.textContent=`${pad2(d.getHours())}:${pad2(d.getMinutes())}`}},5000);
+
+/* ---------- PWA install ---------- */
+let installEvt=null;
+const isStandalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installEvt=e;if(R.view!=='board'&&!document.body.classList.contains('mobilemode'))$('#topbar').innerHTML=topbar()});
+window.addEventListener('appinstalled',()=>{installEvt=null;toast(L('Aplikace nainstalována','App installed'));$('#topbar').innerHTML=topbar()});
+async function installApp(){
+ if(installEvt){installEvt.prompt();try{await installEvt.userChoice}catch(e){}installEvt=null;$('#topbar').innerHTML=topbar();return}
+ const ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
+ modal(`${ic('dl')} ${L('Instalace aplikace','Install the app')}`,isStandalone()?`<div class="banner ok">${L('Aplikace už běží jako nainstalovaná.','The app is already running installed.')}</div>`:`
+ ${location.protocol!=='https:'?`<div class="banner warn">${ic('alert')}<div>${L('Instalace funguje jen z webové adresy (GitHub Pages), ne z lokálně otevřeného souboru.','Install works only from the web address (GitHub Pages), not from a local file.')}<br><b class="mono small">https://holyvatz-cyber.github.io/povoleni-k-praci/</b></div></div>`:''}
+ <h4 style="margin:4px 0 6px">${L('Počítač (Chrome / Edge)','PC (Chrome / Edge)')}</h4><p class="small">${L('V adresním řádku klikněte na ikonu <b>Instalovat</b> (monitor se šipkou), nebo menu ⋮ → <b>Instalovat aplikaci Povolení k práci</b>. Aplikace se objeví v nabídce Start a lze ji připnout na hlavní panel.','Click the <b>Install</b> icon in the address bar, or menu ⋮ → <b>Install Permit to Work</b>. It appears in the Start menu and can be pinned to the taskbar.')}</p>
+ <h4 style="margin:12px 0 6px">Android (Chrome)</h4><p class="small">${L('Menu ⋮ → <b>Přidat na plochu</b> / <b>Instalovat aplikaci</b>.','Menu ⋮ → <b>Add to Home screen</b> / <b>Install app</b>.')}</p>
+ <h4 style="margin:12px 0 6px">iPhone / iPad (Safari)</h4><p class="small">${L('Tlačítko <b>Sdílet</b> (čtverec se šipkou) → <b>Přidat na plochu</b>.','<b>Share</b> button → <b>Add to Home Screen</b>.')}${ios?' 👈':''}</p>
+ <div class="banner info" style="margin-top:12px">${ic('alert')}<div class="small">${L('Data povolení jsou uložena v každém zařízení zvlášť. Nainstalovaná aplikace a prohlížeč na stejném PC sdílejí stejná data.','Permit data are stored per device. The installed app and browser on the same PC share the same data.')}</div></div>`);
+}
+
+/* ---------- settings assistant (chat) ---------- */
+const AS={open:false,msgs:[],undo:[]};
+const nrm=t=>{let o='';for(const c of t){o+=c.length===2?c:(c.normalize('NFKD')[0]||c).toLowerCase()}return o};
+const GASKEY=[['o2',/\b(o2|kyslik\w*|oxygen)\b/],['so2',/\b(so2|oxid\w* sirici\w*)/],['nh3',/\b(nh3|amoniak\w*|cpav\w*|ammonia)/],['ch4',/\b(ch4|methan\w*|metan\w*|dmv|lel)\b/],['co',/\b(co|oxid\w* uhelnat\w*|carbon monoxide)\b/]];
+const GASLBL={o2min:'O₂ min (%)',o2max:'O₂ max (%)',co:'CO max (ppm)',so2:'SO₂ max (ppm)',nh3:'NH₃ max (ppm)',ch4:'CH₄ max (% DMV)'};
+function nums(n){return (n.match(/\d+(?:[.,]\d+)?/g)||[]).map(x=>+x.replace(',','.'))}
+function after(text,n,re){const m=n.match(re);if(!m)return '';let r=text.slice(m.index+m[0].length);r=r.replace(/^[\s:=–\-]*(na |je |to |:)?\s*/i,'').replace(/^["„“']+|["“”']+$/g,'').trim();return r}
+function setS(path,val,label,unit=''){
+ const old=getPath(S.settings,path);const oldC=Array.isArray(old)?old.slice():old;
+ if(JSON.stringify(oldC)===JSON.stringify(val))return `<div class="chg">${ic('check')}<span><b>${esc(label)}</b>: ${L('už je nastaveno na','already set to')} <b>${esc(Array.isArray(val)?val.join(', '):val)}${unit}</b></span></div>`;
+ setPath(S.settings,path,val);
+ const show=v=>Array.isArray(v)?(v.join(', ')||'—'):(v===''||v==null?'—':v);
+ S.settings.changeLog=(S.settings.changeLog||[]).concat({at:Date.now(),label,from:String(show(oldC)),to:String(show(val))}).slice(-200);
+ AS.undo.push({path,old:oldC,label});save();
+ if(path==='lang'){LANG=val}
+ refreshBehind();
+ return `<div class="chg">${ic('check')}<span><b>${esc(label)}</b>: <s>${esc(show(oldC))}${unit}</s> → <b>${esc(show(val))}${unit}</b></span></div>`;
+}
+function refreshBehind(){if(R.view==='edit'){const p=curP(),s=$('#side');if(p&&s)s.innerHTML=sidePanel(p)}else render()}
+function asstHelp(){return L(`Rozumím pokynům k nastavení, např.:<ul>
+<li><b>limit CO 30</b> · <b>kyslík 19,5–23,5</b> · <b>O2 min 19</b></li>
+<li><b>tísňové číslo 150 / 112</b> · <b>vrátnice 417 123 456</b></li>
+<li><b>přidej prostor Silo 3</b> · <b>odeber prostor Silo 3</b></li>
+<li><b>přidej přístroj Dräger X-am 2500</b></li>
+<li><b>dohled po svařování 10 h</b> · <b>interval kontrol 20 min</b></li>
+<li><b>upozorňovat 60 min předem</b> · <b>další číslo povolení 200</b></li>
+<li><b>funkce držitele Vedoucí směny</b> · <b>název závodu Krupka</b></li>
+<li><b>veřejná adresa https://…</b> · <b>jazyk angličtina</b></li>
+<li><b>zobraz nastavení</b> · <b>historie změn</b> · <b>zpět</b> (vrátí poslední změnu)</li></ul>`,
+`I understand settings commands, e.g.:<ul><li><b>CO limit 30</b> · <b>oxygen 19.5–23.5</b></li><li><b>emergency 150 / 112</b> · <b>gate 417 123 456</b></li><li><b>add space Silo 3</b> · <b>remove space Silo 3</b></li><li><b>add device Dräger X-am 2500</b></li><li><b>post-weld watch 10 h</b> · <b>check interval 20 min</b></li><li><b>warn 60 min before</b> · <b>next permit number 200</b></li><li><b>show settings</b> · <b>change history</b> · <b>undo</b></li></ul>`)}
+function asstSummary(){const s=S.settings,l=s.limits;return `<b>${L('Aktuální nastavení','Current settings')}</b><ul>
+<li>${L('Závod','Plant')}: ${esc(s.plant)}</li><li>${L('Tísňová čísla','Emergency')}: ${esc(s.emergency)} · ${L('vrátnice','gate')}: ${esc(s.gateTel||'—')}</li>
+<li>O₂ ${l.o2min}–${l.o2max} % · CO ≤ ${l.co} ppm · SO₂ ≤ ${l.so2} ppm · NH₃ ≤ ${l.nh3} ppm · CH₄ ≤ ${l.ch4} % DMV</li>
+<li>${L('Dohled po svařování','Post-weld watch')}: ${s.defPostHours} h / ${s.defInterval} min</li><li>${L('Upozornění na konec','Expiry warning')}: ${s.soonMin} min</li>
+<li>${L('Další číslo','Next no.')}: T ${String(s.nextNo).padStart(4,'0')} · KK_053: ${String(s.nextHot).padStart(6,'0')}</li>
+<li>${L('Vlastní prostory','Custom spaces')}: ${esc((s.extraSpaces||[]).join(', ')||'—')}</li><li>${L('Vlastní přístroje','Custom devices')}: ${esc((s.extraDevices||[]).join(', ')||'—')}</li>
+<li>${L('Veřejná adresa','Public URL')}: <span class="mono small">${esc(s.publicUrl||'—')}</span></li></ul>`}
+function asstHandle(text){
+ const n=nrm(text).trim();const has=re=>re.test(n);const N=nums(n.replace(/\b(o2|so2|nh3|ch4|kk_?053|x-am)\b/g,' '));
+ if(!n)return '';
+ if(has(/^(\?|(napoveda|help|pomoc|co umis|ahoj|dobry den|hi|hello)\b)/))return asstHelp();
+ if(has(/^(zpet|vrat|vratit|vratte|undo|storno)\b/)){const u=AS.undo.pop();if(!u)return L('Není co vrátit.','Nothing to undo.');const r=setS(u.path,u.old,u.label+' ('+L('vráceno','undone')+')');AS.undo.pop();return L('Vráceno.','Undone.')+r}
+ if(has(/(historie|log|zmeny nastaveni|change history)/)){const c=(S.settings.changeLog||[]).slice(-12).reverse();return c.length?`<b>${L('Poslední změny nastavení','Recent settings changes')}</b><ul>${c.map(x=>`<li>${fmtShort(toLocal(x.at))} – ${esc(x.label)}: ${esc(x.from)} → ${esc(x.to)}</li>`).join('')}</ul>`:L('Zatím žádné změny.','No changes yet.')}
+ if(has(/(zobraz|ukaz|vypis|show|aktualni).*(nastaveni|limit|settings)|^nastaveni$|^limity$/))return asstSummary();
+ if(has(/(instal|nainstal)/)){setTimeout(installApp,50);return L('Otevírám instalaci aplikace…','Opening app installation…')}
+ if(has(/(zaloh|export|backup)/)){const b=new Blob([JSON.stringify(S,null,1)],{type:'application/json'});dl(b,`povoleni-k-praci-${new Date().toISOString().slice(0,10)}.json`);return L('Záloha JSON se stahuje.','JSON backup downloading.')}
+ if(has(/\b(jazyk|language|prepni)\b/)||has(/^(english|anglicky|cesky|czech)$/)){const en=has(/(angl|english|\ben\b)/);return setS('lang',en?'en':'cs',L('Jazyk','Language'))}
+ // custom lists
+ const listCmd=(key,word,label)=>{const add=has(new RegExp(`(pridej|pridat|novy|nova|nove|add)\\b.*${word}`));const rem=has(new RegExp(`(odeber|odebrat|smaz|odstran|vymaz|remove|delete)\\b.*${word}`));if(!add&&!rem)return null;
+  const name=after(text,n,new RegExp(`${word}\\w*`));if(!name)return L('Napište i název, např. „přidej prostor Silo 3“.','Add a name, e.g. “add space Silo 3”.');
+  const arr=(S.settings[key]||[]).slice();const i=arr.findIndex(x=>nrm(x)===nrm(name));
+  if(add){if(i>=0)return L(`„${esc(name)}“ už v seznamu je.`,`“${esc(name)}” is already listed.`);arr.push(name);return setS(key,arr,label)+`<div class="small muted" style="margin-top:4px">${L('Nově se nabízí ve formuláři KK_047.','Now offered in form KK_047.')}</div>`}
+  if(i<0)return L(`„${esc(name)}“ v seznamu není. Vlastní položky: ${esc(arr.join(', ')||'—')}`,`“${esc(name)}” not found.`);arr.splice(i,1);return setS(key,arr,label)};
+ let r=listCmd('extraSpaces','(prostor|space)',L('Vlastní uzavřené prostory','Custom confined spaces'));if(r)return r;
+ r=listCmd('extraDevices','(pristroj|detektor|meric\\w*|device)',L('Vlastní měřicí přístroje','Custom gas detectors'));if(r)return r;
+ // gas limits
+ const g=GASKEY.find(x=>x[1].test(n)&&(x[0]!=='co'||has(/(limit|max|ppm|nastav|co\s*(na|=|:)?\s*\d)/)));
+ if(g){const warn=`<div class="warnline">⚠ ${L('Limity musí odpovídat schválení HSE / technika PO.','Limits must match HSE / fire technician approval.')}</div>`;
+  if(!N.length)return L(`Jakou hodnotu nastavit pro ${g[0].toUpperCase()}? Např. „${g[0].toUpperCase()} ${S.settings.limits[g[0]==='o2'?'o2min':g[0]]}“.`,`Which value for ${g[0].toUpperCase()}?`);
+  if(g[0]==='o2'){let out='';const ok=(k,v)=>k==='o2min'?v>=18&&v<=21:v>=21&&v<=25;
+   let pairs=[];if(N.length>=2){const [a,b]=[Math.min(N[0],N[1]),Math.max(N[0],N[1])];pairs=[['o2min',a],['o2max',b]]}
+   else if(has(/(min|dolni|spodni|nejmene|low)/))pairs=[['o2min',N[0]]];else if(has(/(max|horni|nejvice|high)/))pairs=[['o2max',N[0]]];
+   else return L(`Je ${N[0]} % minimum, nebo maximum kyslíku? Napište „O2 min ${N[0]}“ nebo „O2 max ${N[0]}“, případně rozsah „kyslík 19,5–23,5“.`,`Is ${N[0]} % the O₂ minimum or maximum?`);
+   for(const [k,v] of pairs){if(!ok(k,v))return L(`Hodnota ${v} % pro ${GASLBL[k]} je mimo rozumný rozsah – změnu jsem neprovedl.`,`${v} % is out of range for ${GASLBL[k]} – not changed.`);}
+   pairs.forEach(([k,v])=>{out+=setS('limits.'+k,v,GASLBL[k],' %');if((k==='o2min'&&v<DEFAULT_SETTINGS.limits.o2min)||(k==='o2max'&&v>DEFAULT_SETTINGS.limits.o2max))out+=`<div class="warnline">⚠ ${L(`${GASLBL[k]} je méně přísné než výchozí ${DEFAULT_SETTINGS.limits[k]} %.`,`${GASLBL[k]} is less strict than default.`)}</div>`});return L('Hotovo.','Done.')+out+warn}
+  const v=N[0];if(!(v>0)||v>1000)return L('Hodnota mimo rozsah – změnu jsem neprovedl.','Value out of range – not changed.');
+  const def=DEFAULT_SETTINGS.limits[g[0]];return L('Hotovo.','Done.')+setS('limits.'+g[0],v,GASLBL[g[0]])+(v>def?`<div class="warnline">⚠ ${L(`Nová hodnota je vyšší (méně přísná) než výchozí ${def}.`,`New value is higher (less strict) than default ${def}.`)}</div>`:'')+warn}
+ // fire watch
+ if(has(/interval/)||(has(/kontrol/)&&has(/min/))){const v=N[0];if(!(v>=5&&v<=240))return L('Interval zadejte v minutách (5–240), např. „interval kontrol 20 min“.','Give the interval in minutes (5–240).');return setS('defInterval',v,L('Výchozí interval kontrol po svařování','Default post-weld check interval'),' min')+`<div class="small muted" style="margin-top:4px">${L('Platí pro nově vytvořené KK_053.','Applies to newly created KK_053.')}</div>`}
+ if(has(/(dohled|po svarovani|post.?weld)/)){const v=N[0];if(!v)return L('Kolik hodin? Např. „dohled po svařování 10 h“.','How many hours?');if(v<8)return L('KK_053 vyžaduje dohled po svařování <b>minimálně 8 hodin</b> – nižší hodnotu nenastavím.','KK_053 requires at least 8 hours – not changed.');return setS('defPostHours',v,L('Výchozí dohled po svařování','Default post-weld watch'),' h')+`<div class="small muted" style="margin-top:4px">${L('Platí pro nově vytvořené KK_053.','Applies to newly created KK_053.')}</div>`}
+ if(has(/(upozorn|predem|konec platnosti|konci do|warn)/)){let v=N[0];if(!v)return L('Kolik minut nebo hodin předem?','How long before?');if(has(/\d\s*(h|hod)/))v*=60;return setS('soonMin',Math.round(v),L('Upozornění na konec platnosti předem','Expiry warning before'),' min')}
+ if(has(/(053|svarov\w* cislo|poradov)/)&&N.length){return setS('nextHot',Math.round(N[0]),L('Další poř. číslo KK_053','Next KK_053 seq. no.'))}
+ if(has(/(cislo povoleni|dalsi cislo|cislovani|next permit|permit number)/)){const v=Math.round(N[0]);if(!v)return L('Zadejte číslo, např. „další číslo povolení 200“.','Give a number.');if(S.permits.some(p=>p.no==='T '+String(v).padStart(4,'0')))return L(`Číslo T ${String(v).padStart(4,'0')} už existuje – zvolte vyšší.`,`Number exists already.`);return setS('nextNo',v,L('Další číslo povolení','Next permit number'))}
+ const phone=t=>(t.match(/[+\d][\d\s/+]*\d/g)||[]).join(' / ').replace(/\s+/g,' ').trim();
+ if(has(/(tisnov|nouz|emergenc|zachrann|hasic)/)){const v=phone(after(text,n,/(tisnov\w*|nouz\w*|emergenc\w*)( cisl\w*| linka| linky)?/));if(!v)return L('Napište čísla, např. „tísňové číslo 150 / 112“.','Give the numbers.');return setS('emergency',v,L('Tísňová čísla','Emergency numbers'))}
+ if(has(/(vratnic|ohlasovn|gate)/)){const v=phone(text);if(!v)return L('Napište telefon vrátnice.','Give the gate phone.');return setS('gateTel',v,L('Telefon vrátnice / ohlašovny','Gate phone'))}
+ if(has(/https?:\/\//)){const m=text.match(/https?:\/\/\S+/);let u=m[0];if(!u.endsWith('/')&&!/\.html?$/.test(u))u+='/';return setS('publicUrl',u,L('Veřejná adresa aplikace','Public app URL'))+`<div class="small muted" style="margin-top:4px">${L('QR kódy mobilních kopií teď povedou sem.','Mobile copy QR codes now point here.')}</div>`}
+ if(has(/(drzitel|funkce)/)){const v=after(text,n,/(funkc\w*( drzitel\w*)?|drzitel\w*( originalu)?)/);if(!v)return L('Napište funkci, např. „funkce držitele Vedoucí směny“.','Give the function.');return setS('holderDefault',v,L('Výchozí funkce držitele originálu','Default original holder function'))}
+ if(has(/(nazev zavodu|zavod|plant)/)){const v=after(text,n,/(nazev zavodu|zavod\w*|plant name|plant)/);if(!v)return L('Napište název, např. „název závodu Závod Krupka“.','Give the name.');return setS('plant',v,L('Název závodu','Plant name'))}
+ return L(`Tomu nerozumím. ${asstHelp()}`,`Sorry, I didn’t get that. ${asstHelp()}`);
+}
+const CHIPS=[['Zobraz nastavení','Show settings'],['Limit CO 30','CO limit 30'],['Kyslík 19,5–23,5','Oxygen 19.5–23.5'],['Přidej prostor ','Add space '],['Tísňové číslo 150 / 112','Emergency 150 / 112'],['Dohled po svařování 10 h','Post-weld watch 10 h'],['Historie změn','Change history'],['Zpět','Undo'],['Nápověda','Help']];
+function asstRender(){
+ let fab=$('#asstFab'),box=$('#asst');
+ if(!fab){fab=document.createElement('button');fab.id='asstFab';fab.className='asst-fab';document.body.appendChild(fab);fab.onclick=()=>{AS.open=true;asstRender();setTimeout(()=>$('#asstIn')?.focus(),50)}}
+ fab.innerHTML=`<svg class="ico" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${L('Asistent nastavení','Settings assistant')}`;
+ fab.style.display=AS.open?'none':'';
+ if(!AS.open){box&&box.remove();return}
+ if(!box){box=document.createElement('div');box.id='asst';box.className='asst';document.body.appendChild(box)}
+ if(!AS.msgs.length)AS.msgs.push({me:false,h:L('Dobrý den, jsem asistent nastavení aplikace. Napište, co chcete změnit – každou změnu potvrdím a dá se vrátit příkazem <b>zpět</b>.','Hi, I’m the settings assistant. Tell me what to change – every change is confirmed and can be reverted with <b>undo</b>.')});
+ box.innerHTML=`<header>${ic('gear')}<b>${L('Asistent nastavení','Settings assistant')}<small>${L('změny limitů, kontaktů, seznamů a číslování','limits, contacts, lists and numbering')}</small></b><button data-asst="clear" title="${L('Vymazat chat','Clear chat')}">${ic('trash')}</button><button data-asst="close" title="${L('Zavřít','Close')}">${ic('x')}</button></header>
+ <div class="msgs" id="asstMsgs">${AS.msgs.map(m=>`<div class="msg ${m.me?'me':'bot'}">${m.me?esc(m.h):m.h}</div>`).join('')}</div>
+ <div class="chips">${CHIPS.map(c=>`<button data-chip="${esc(lbl(['',...c]))}">${esc(lbl(['',...c]).trim())}</button>`).join('')}</div>
+ <form id="asstForm"><input id="asstIn" autocomplete="off" placeholder="${L('Např. limit CO 30 ppm','e.g. CO limit 30 ppm')}"><button type="submit">${ic('back','')}</button></form>`;
+ box.querySelector('form button .ico').style.transform='rotate(180deg)';
+ const ms=$('#asstMsgs');ms.scrollTop=ms.scrollHeight;
+ box.querySelector('#asstForm').onsubmit=e=>{e.preventDefault();const i=$('#asstIn');const t=i.value.trim();if(!t)return;AS.msgs.push({me:true,h:t});let h;try{h=asstHandle(t)}catch(x){console.error(x);h=L('Při zpracování nastala chyba – zkuste to formulovat jinak.','Error – please rephrase.')}AS.msgs.push({me:false,h});asstRender();setTimeout(()=>$('#asstIn')?.focus(),20)};
+ box.querySelectorAll('[data-chip]').forEach(b=>b.onclick=()=>{const v=b.dataset.chip;const i=$('#asstIn');if(v.endsWith(' ')){i.value=v;i.focus()}else{i.value=v;box.querySelector('#asstForm').requestSubmit()}});
+ box.querySelector('[data-asst="close"]').onclick=()=>{AS.open=false;asstRender()};
+ box.querySelector('[data-asst="clear"]').onclick=()=>{AS.msgs=[];asstRender()};
+}
 
 /* ---------- demo ---------- */
 function demo(){
@@ -3363,7 +3530,9 @@ load();
 if(location.hash.startsWith('#m=')){renderMobile(location.hash.slice(3))}
 else{
  const h=location.hash;if(h==='#board')R.view='board';
+ if(h==='#new'){const np=newPermit();S.permits.push(np);save();R.view='edit';R.id=np.id;R.tab='basic';history.replaceState(null,'',location.pathname)}
  render();
+ if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
 }
 window.addEventListener('hashchange',()=>{if(location.hash.startsWith('#m='))location.reload();else if(location.hash==='#board')go('board')});
 })();

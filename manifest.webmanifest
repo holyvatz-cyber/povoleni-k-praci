@@ -1,0 +1,21 @@
+{
+  "name": "Povolení k práci – Knauf Insulation Krupka",
+  "short_name": "Povolení k práci",
+  "description": "Digitální povolení k práci (KI_F_057), práce s otevřeným ohněm (KK_053) a testování atmosféry (KK_047).",
+  "lang": "cs",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "background_color": "#ffffff",
+  "theme_color": "#003778",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Digitální board", "short_name": "Board", "url": "./#board", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Nové povolení", "short_name": "Nové", "url": "./#new", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

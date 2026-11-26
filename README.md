@@ -5,6 +5,15 @@ Webová aplikace pro digitální vedení povolení k práci (jeden soubor `index
 **Spuštění:** https://holyvatz-cyber.github.io/povoleni-k-praci/
 **Board na TV:** https://holyvatz-cyber.github.io/povoleni-k-praci/#board
 
+## Instalace do PC a telefonu
+Aplikace je PWA – po instalaci má vlastní ikonu, okno a funguje i offline.
+- **PC (Chrome / Edge):** tlačítko **Instalovat** v aplikaci nebo ikona instalace v adresním řádku. Zástupci: *Digitální board*, *Nové povolení* (pravé tlačítko na ikoně).
+- **Android:** Chrome → ⋮ → *Instalovat aplikaci*.
+- **iPhone:** Safari → *Sdílet* → *Přidat na plochu*.
+
+## Asistent nastavení (PC)
+Tlačítko vpravo dole. Rozumí pokynům v češtině i angličtině, např. `limit CO 30`, `kyslík 19,5–23,5`, `přidej prostor Silo 3`, `přidej přístroj Dräger X-am 2500`, `tísňové číslo 150 / 112`, `dohled po svařování 10 h`, `zobraz nastavení`, `historie změn`, `zpět`. Každá změna se potvrdí, zapíše do historie a dá se vrátit. Nebezpečné hodnoty (např. dohled < 8 h, O₂ min < 18 %) odmítne.
+
 ## Propojené formuláře
 | Formulář | Obsah v aplikaci |
 |---|---|
